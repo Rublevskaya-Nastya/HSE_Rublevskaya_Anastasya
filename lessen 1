@@ -1,0 +1,51 @@
+# Задание 1. Работа с переменными, ввод/вывод, id()
+# Создаём переменные разных типов и выводим их на экран
+name = "Иван"
+age = 20
+height = 1.75
+
+print("Имя:", name)
+print("Возраст:", age)
+print("Рост:", height)
+
+# Запрашиваем у пользователя данные
+user_name = input("Введите ваше имя: ")
+user_age = input("Введите ваш возраст: ")
+
+print(f"Привет, {user_name}! Вам {user_age} лет.")
+
+# Пример работы id() для изменяемых и неизменяемых объектов
+a = [1, 2, 3]
+b = "строка"
+print("id списка до изменения:", id(a))
+a.append(4)
+print("id списка после изменения:", id(a))  # id не изменился
+
+print("id строки:", id(b))
+# b += "!" — если раскомментировать, id изменится, т.к. строки неизменяемы
+
+# Задание 2. Перевод секунд в часы, минуты, секунды
+time_str = input("Введите время в секундах: ")
+
+if time_str.isdigit():
+    total_seconds = int(time_str)
+    hours = total_seconds // 3600
+    minutes = (total_seconds % 3600) // 60
+    seconds = total_seconds % 60
+    print(f"Часы: {hours}")
+    print(f"Минуты: {minutes}")
+    print(f"Секунды: {seconds}")
+else:
+    print("Ошибка: введите только числовые данные!")
+
+# Задание 3. Сумма n + nn + nnn
+n_str = input("Введите число n (от 1 до 9): ")
+
+if n_str.isdigit() and 1 <= int(n_str) <= 9:
+    n = int(n_str)
+    nn = int(n_str * 2)
+    nnn = int(n_str * 3)
+    result = n + nn + nnn
+    print(f"Сумма {n} + {nn} + {nnn} = {result}")
+else:
+    print("Ошибка: введите целое число от 1 до 9!")
