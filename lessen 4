@@ -1,0 +1,58 @@
+def validate_inn(inn):
+    """
+    Проверяет корректность ИНН (10 или 12 цифр) по математическим алгоритмам.
+    Возвращает True, если ИНН валиден, иначе False.
+    """
+    inn = str(inn).strip()
+
+    # Проверка, что ИНН состоит только из цифр
+    if not inn.isdigit():
+        return False
+
+    # Проверка длины
+    if len(inn) == 10:
+        return validate_inn_org(inn)
+    elif len(inn) == 12:
+        return validate_inn_individual(inn)
+    else:
+        return False
+
+def validate_inn_org(inn):
+    """Валидация ИНН организации (10 знаков)."""
+    weights = [2, 4, 10, 3, 5, 9, 4, 6, 8]
+    check_sum = sum(int(inn[i]) * weights[i] for i in range(9))
+    control_digit = check_sum % 11
+    if control_digit > 9:
+        control_digit %= 10
+    return control_digit == int(inn[9])
+
+def validate_inn_individual(inn):
+    """Валидация ИНН физического лица или ИП (12 знаков)."""
+    weights1 = [7, 2, 4, 10, 3, 5, 9, 4, 6, 8]
+    weights2 = [3, 7, 2, 4, 10, 3, 5, 9, 4, 6, 8]
+
+    check_sum1 = sum(int(inn[i]) * weights1[i] for i in range(10))
+    control_digit1 = check_sum1 % 11
+    if control_digit1 > 9:
+        control_digit1 %= 10
+
+    check_sum2 = sum(int(inn[i]) * weights2[i] for i in range(11))
+    control_digit2 = check_sum2 % 11
+    if control_digit2 > 9:
+        control_digit2 %= 10
+
+    return (control_digit1 == int(inn[10])) and (control_digit2 == int(inn[11]))
+
+# Примеры использования
+if __name__ == "__main__":
+    test_inns = [
+        "7707083893",   # Валидный ИНН организации
+        "500100732259", # Валидный ИНН физ.лица
+        "7707083894",   # Невалидный ИНН организации
+        "500100732258", # Невалидный ИНН физ.лица
+        "12345",        # Короткий ИНН
+        "ABCDEF1234"    # С буквами
+    ]
+
+    for inn in test_inns:
+        print(f"ИНН {inn}: {'валиден' if validate_inn(inn) else 'невалиден'}")
