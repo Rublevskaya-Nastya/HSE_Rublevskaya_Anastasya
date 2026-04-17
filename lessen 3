@@ -1,0 +1,94 @@
+import math
+
+# 1. Математические функции
+
+def factorial(n):
+    """Вычисляет факториал числа n."""
+    if n < 0:
+        return "Факториал для отрицательных чисел не определён"
+    return math.factorial(n)
+
+def max_of_three(numbers):
+    """Возвращает наибольшее из трёх чисел."""
+    a, b, c = numbers
+    return max(a, b, c)
+
+def right_triangle_area(cathetus1, cathetus2):
+    """Вычисляет площадь прямоугольного треугольника по двум катетам."""
+    return (cathetus1 * cathetus2) / 2
+
+# 2. Функции для генерации шапки документа
+
+def generate_court_header(case_data):
+    """
+    Генерирует шапку процессуального документа.
+    case_data: словарь с данными ответчика и номером дела.
+    """
+    # Пример данных по судам (можно расширить или взять из файла)
+    courts = {
+        '40': {
+            'name': 'арбитражный суд города Москвы',
+            'address': '115225, г. Москва, ул. Б. Тульская, 17'
+        },
+        # Добавьте другие суды по необходимости
+    }
+
+    # Истец (ваши данные)
+    plaintiff = {
+        'name': 'Иванов Иван Иванович',
+        'inn': '0000000000',
+        'ogrnip': '000000000000000',
+        'address': '123456, г. Москва, ул. Примерная, 1'
+    }
+
+    # Ответчик
+    defendant = case_data['defendant']
+    case_number = case_data['case_number']
+
+    # Определение суда по коду в номере дела (например, А40-...)
+    court_code = case_number.split('-')[0][1:3]
+    court_info = courts.get(court_code, {'name': 'Неизвестный суд', 'address': 'Адрес не найден'})
+
+    header = f"""В {court_info['name']}
+Адрес: {court_info['address']}
+Истец: {plaintiff['name']}
+ИНН {plaintiff['inn']} ОГРНИП {plaintiff['ogrnip']}
+Адрес: {plaintiff['address']}
+Ответчик: {defendant['name']}
+ИНН {defendant['inn']} ОГРН {defendant['ogrn']}
+Адрес: {defendant['address']}
+Номер дела {case_number}
+"""
+    return header
+
+def generate_headers_for_all(defendants_list):
+    """
+    Принимает список словарей с данными ответчиков и номерами дел,
+    генерирует шапки для каждого случая.
+    """
+    for case_data in defendants_list:
+        print(generate_court_header(case_data))
+        print('-' * 40)
+
+# Пример использования
+if __name__ == "__main__":
+    # Математические функции
+    print(f"Факториал 5: {factorial(5)}")
+    print(f"Максимум из (3, 7, 2): {max_of_three((3, 7, 2))}")
+    print(f"Площадь треугольника (катеты 3 и 4): {right_triangle_area(3, 4)}")
+
+    # Генерация шапок
+    cases = [
+        {
+            'defendant': {
+                'name': 'ООО “Кооператив Озеро”',
+                'inn': '1231231231',
+                'ogrn': '123124129312941',
+                'address': '123534, г. Москва, ул. Красивых молдавских партизан, 69'
+            },
+            'case_number': 'А40-123456/2023'
+        },
+        # Добавьте другие случаи при необходимости
+    ]
+
+    generate_headers_for_all(cases)
